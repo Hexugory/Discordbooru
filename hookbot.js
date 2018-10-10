@@ -6,19 +6,19 @@ var previousID;
 
 request(`https://danbooru.donmai.us/posts.json${config.baseTags ? `?tags=${config.baseTags}&` : '?'}limit=1`,{json: true}).then((posts)=>{
     recentID = posts[0].id;
-    console.log(`Starting at ${recentID}`)
+    console.log(`Starting at ${recentID}`);
 }).catch(console.error);
 
 setInterval(()=>{
-    console.log(`Checking Danbooru starting at ${recentID}`)
+    console.log(`Checking Danbooru starting at ${recentID}`);
     request(`https://danbooru.donmai.us/posts.json?tags=${config.baseTags ? config.baseTags+'+' : ''}id:>=${recentID}`,{json: true}).then((posts) => {
         recentID = posts[0].id;
         if(previousID === recentID) posts.splice(0,1);
         previousID = recentID;
         posts.forEach(post => {
             webhooks.forEach(hook => {
-                if(hook.tags.every(tag => {return post.tag_string.includes(tag)}) && hook.safe ? post.rating === 's' : post.rating != 's'){
-                    console.log(`${post.id} matches ${hook.tags} safe: ${hook.safe}`)
+                if(hook.tags.every(tag => {return post.tag_string.includes(tag)}) && (hook.safe ? post.rating === 's' : post.rating != 's')){
+                    console.log(`${post.id} matches ${hook.tags} safe: ${hook.safe}`);
                     let color = post.id-(Math.floor(post.id/16777215)*16777215);
                     let options = {
                         method: 'POST',
