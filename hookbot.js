@@ -13,7 +13,7 @@ setInterval(()=>{
     console.log(`Checking Danbooru starting at ${recentID}`);
     request(`https://danbooru.donmai.us/posts.json?tags=${config.baseTags ? config.baseTags+'+' : ''}id:>=${recentID}`,{json: true}).then((posts) => {
         recentID = posts[0].id;
-        if(previousID === recentID) posts.splice(0,1);
+        if(previousID) posts.splice(posts.findIndex(post => {return post.id === previousID}),1);
         previousID = recentID;
         posts.forEach(post => {
             webhooks.forEach(hook => {
@@ -30,7 +30,7 @@ setInterval(()=>{
                                 image: {url:post.file_url},
                                 timestamp: post.created_at,
                                 color: color,
-                                description: `[Large](${post.source})`
+                                description: `[Large](${post.large_file_url})`
                             }]
                         },
                         json: true
