@@ -1,0 +1,22 @@
+{
+  "name": "discordbooru",
+  "version": "1.0.0",
+  "description": "A Danbooru feed script using Discord's webhooks.",
+  "main": "hookbot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimmyy4/Discordbooru.git"
+  },
+  "author": "who cares",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jimmyy4/Discordbooru/issues"
+  },
+  "homepage": "https://github.com/jimmyy4/Discordbooru#readme",
+  "dependencies": {
+    "request-promise-native": "^1.0.5"
+  }
+}
