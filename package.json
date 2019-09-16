@@ -10,13 +10,14 @@
     "type": "git",
     "url": "git+https://github.com/jimmyy4/Discordbooru.git"
   },
-  "author": "who cares",
+  "author": "jimmyy4",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jimmyy4/Discordbooru/issues"
   },
   "homepage": "https://github.com/jimmyy4/Discordbooru#readme",
   "dependencies": {
-    "request-promise-native": "^1.0.5"
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
   }
 }
