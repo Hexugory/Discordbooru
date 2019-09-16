@@ -19,6 +19,9 @@ setInterval(()=>{
             webhooks.forEach(hook => {
                 if(hook.tags.every(tag => {return post.tag_string.includes(tag)}) && (hook.safe ? post.rating === 's' : post.rating != 's')){
                     console.log(`${post.id} matches ${hook.tags} safe: ${hook.safe}`);
+					if(post.tag_string.includes('guro') || (post.tag_string.includes('loli') && post.rating != 's')){
+                        return console.log('Not allowed by Discord')
+                    };
                     let color = post.id-(Math.floor(post.id/16777215)*16777215);
                     let options = {
                         method: 'POST',
@@ -34,10 +37,6 @@ setInterval(()=>{
                             }]
                         },
                         json: true
-                    };
-                    if(post.tag_string.includes('guro') || (post.tag_string.includes('loli') && post.rating != 's')){
-                        delete options.body.embeds[0].image;
-                        options.body.embeds[0].title += ' (not allowed by discord)';
                     };
                     request(options);
                 };
