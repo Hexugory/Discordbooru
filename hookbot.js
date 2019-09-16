@@ -6,7 +6,7 @@ var previousID;
 
 request(`https://danbooru.donmai.us/posts.json${config.baseTags ? `?tags=${config.baseTags}&` : '?'}limit=1`,{json: true}).then((posts)=>{
     recentID = posts[0].id;
-    console.log(`Starting at ${recentID}`);
+    return console.log(`Starting at ${recentID}`);
 }).catch(console.error);
 
 setInterval(()=>{
@@ -38,7 +38,7 @@ setInterval(()=>{
                         },
                         json: true
                     };
-                    request(options);
+                    return request(options).catch(console.error);
                 };
             });
         });
