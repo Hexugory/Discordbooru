@@ -8,6 +8,19 @@ const HOSTNAME = BOORU_URL.split('://')[1] || BOORU_URL;
 const BASE_TAGS = process.env.BASE_TAGS || "";
 const WEBHOOKS_PATH = process.env.WEBHOOKS_PATH || "/usr/src/app/webhooks.json";
 
+const RATINGS = {
+    general: 0,
+    g: 0,
+    sensitive: 1,
+    //Include safe for legacy Danbooru instances
+    safe: 1,
+    s: 1,
+    questionable: 2,
+    q: 2,
+    explicit: 3,
+    e: 3
+};
+
 const lib = BOORU_URL.startsWith('https://') ? https : http;
 
 async function pollAPI(path) {
@@ -46,7 +59,7 @@ async function pollAPI(path) {
 async function postMessage(path, data) {
     return new Promise((resolve, reject) => {
         const req = https.request({
-            hostname: 'canary.discordapp.com',
+            hostname: 'discord.com',
             path: '/api/webhooks/'+path,
             method: 'POST',
             headers: {
@@ -104,8 +117,8 @@ pollAPI(`/posts.json${BASE_TAGS ? `?tags=${BASE_TAGS}&` : '?'}limit=1`).then((po
 
         for (const post of posts) {
             for (const hook of webhooks) {
-                if (!hook.tags.every(tag => { return post.tag_string.includes(tag) }) || (hook.safe ? post.rating === 's' : post.rating != 's')) {
-                    console.log(`${post.id} matches ${hook.tags} safe: ${hook.safe}`);
+                if (hook.tags.every(tag => { return post.tag_string.includes(tag) }) && RATINGS[post.rating] <= RATINGS[hook.maxRating] && RATINGS[post.rating] >= RATINGS[hook.minRating]) {
+                    console.log(`${post.id} matches ${hook.tags} ${hook.minRating}-${hook.maxRating}`);
 
                     if (hook.exclusionTags.some(tag => post.tag_string.includes(tag))) {
                         return console.log('Post contains excluded tags');
