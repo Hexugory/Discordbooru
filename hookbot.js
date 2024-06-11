@@ -1,12 +1,24 @@
 const request = require('request-promise-native');
+const fs = require('fs');
 require('dotenv').config();
 
-const webhooks = require('./webhooks.json');
 const booru_url = process.env.BOORU_URL;
 const baseTags = process.env.BASE_TAGS || '';
-const exclusionTags = (process.env.EXCLUSION_TAGS || '').split(' ');
+webhooksPath = process.env.WEBHOOKS_PATH;
 var recentID;
 var previousID;
+
+if (!webhooksPath) {
+    webhooksPath = "/usr/src/app/webhooks.json"
+}
+
+let webhooks;
+try {
+    webhooks = JSON.parse(fs.readFileSync(webhooksPath, 'utf8'));
+} catch (err) {
+    console.error('Error reading webhooks file:', err);
+    process.exit(1);
+}
 
 request(`${booru_url}/posts.json${baseTags ? `?tags=${baseTags}&` : '?'}limit=1`, { json: true }).then((posts) => {
     recentID = posts[0].id;
@@ -24,9 +36,9 @@ setInterval(() => {
                 if (hook.tags.every(tag => { return post.tag_string.includes(tag) }) && (hook.safe ? post.rating === 's' : post.rating != 's')) {
                     console.log(`${post.id} matches ${hook.tags} safe: ${hook.safe}`);
 
-                    if (exclusionTags.some(tag => post.tag_string.includes(tag))) {
-                        return console.log('Post contains excluded tags')
-                    };
+                    if (hook.exclusionTags.some(tag => post.tag_string.includes(tag))) {
+                        return console.log('Post contains excluded tags');
+                    }
 
                     let color = post.id - (Math.floor(post.id / 16777215) * 16777215);
                     let options = {
@@ -45,7 +57,7 @@ setInterval(() => {
                         json: true
                     };
                     return request(options).catch(console.error);
-                };
+                }
             });
         });
     }).catch(console.error);
