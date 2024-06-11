@@ -130,7 +130,7 @@ pollAPI(`/posts.json${BASE_TAGS ? `?tags=${BASE_TAGS}&` : '?'}limit=1`).then((po
                             url: `${BOORU_URL}/posts/${post.id}`,
                             image: { url: post.file_url },
                             timestamp: post.created_at,
-                            color: post.id - (Math.floor(post.id / 16777215) * 16777215),
+                            color: parseInt(hook.color, 16),
                             description: `[Large](${post.large_file_url})`
                         }]
                     });

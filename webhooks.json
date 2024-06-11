@@ -4,6 +4,7 @@
     "exclusionTags": [],
     "uri": "id/token",
     "minRating": "g",
-    "maxRating": "g"
+    "maxRating": "g",
+    "color": "0x1e1e2c"
   }
 ]
