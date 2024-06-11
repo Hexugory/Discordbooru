@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jimmyy4/Discordbooru#readme",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
   }
