@@ -1,11 +1,14 @@
-Option for a filter tag in config.json. Check webhooks.json for an example.
-
+# Environment Variables
+|             |   |
+|-------------|---|
+|  BOORU_URL  |URL to your Danbooru instance|
+|  BASE_TAGS  |List of tags to filter all webhooks by, separated by +|
+|WEBHOOKS_PATH|Path to your `webhooks.json`|
 
 # Running with Docker
 
 Compose file
 ```yaml
-
 services:
   discordbooru:
     image: ghcr.io/hexugory/discordbooru:master
@@ -22,9 +25,11 @@ Use the webhooks.json in this repo as an example.
 [
   {
     "tags": [],
-    "exclusionTags": ["blue_eyes"],
-    "uri": "<WebhookID>/<WebhookToken>",
-    "safe": false
+    "exclusionTags": [],
+    "uri": "id/token",
+    "minRating": "g",
+    "maxRating": "g",
+    "color": "0x1e1e2c"
   }
 ]
 ```
@@ -33,7 +38,7 @@ Use the webhooks.json in this repo as an example.
 
 # Running Manually
 
-Requires NodeJS
+Requires [NodeJS](https://nodejs.org/en)
 
 Install dependencies using `npm i`
 
