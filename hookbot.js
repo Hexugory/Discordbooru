@@ -92,8 +92,6 @@ async function postMessage(path, data) {
 var recentID;
 var previousID;
 
-console.log(process.env.BOORU_URL, process.env.BASE_TAGS, process.env.WEBHOOKS_PATH, BOORU_URL, BASE_TAGS, WEBHOOKS_PATH);
-
 let webhooks;
 try {
     webhooks = JSON.parse(fs.readFileSync(WEBHOOKS_PATH, 'utf8'));
@@ -134,7 +132,6 @@ pollAPI(`/posts.json${BASE_TAGS ? `?tags=${BASE_TAGS}&` : '?'}limit=1`).then((po
                             description: `[Large](${post.large_file_url})`
                         }]
                     });
-                    console.log(body);
                     return postMessage(hook.uri, body);
                 }
             };
