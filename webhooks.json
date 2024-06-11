@@ -1,7 +1,7 @@
 [
   {
     "tags": [],
-    "exclusion_tags": [],
+    "exclusionTags": [],
     "uri": "id/token",
     "safe": false
   }
