@@ -22,7 +22,7 @@ Use the webhooks.json in this repo as an example.
 [
   {
     "tags": [],
-    "exclusionTags": ["size_difference"],
+    "exclusionTags": ["blue_eyes"],
     "uri": "<WebhookID>/<WebhookToken>",
     "safe": false
   }
