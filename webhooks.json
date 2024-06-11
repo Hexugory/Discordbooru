@@ -3,6 +3,7 @@
     "tags": [],
     "exclusionTags": [],
     "uri": "id/token",
-    "safe": false
+    "minRating": "g",
+    "maxRating": "g"
   }
 ]
