@@ -10,7 +10,7 @@ services:
   discordbooru:
     image: ghcr.io/hexugory/discordbooru:master
     environment:
-      - BOORU_URL=https://booru.kitsunehosting.net
+      - BOORU_URL=https://my.danbooru.site
       - BASE_TAGS=
     volumes:
       - /path/to/local/webhooks.json:/usr/src/app/webhooks.json
