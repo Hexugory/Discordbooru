@@ -102,6 +102,7 @@ try {
 
 pollAPI(`/posts.json${BASE_TAGS ? `?tags=${BASE_TAGS}&` : '?'}limit=1`).then((posts) => {
     recentID = posts[0].id;
+    previousID = recentID;
     console.log(`Starting at ${recentID}`);
     
 
@@ -122,9 +123,21 @@ pollAPI(`/posts.json${BASE_TAGS ? `?tags=${BASE_TAGS}&` : '?'}limit=1`).then((po
                         console.log('Post contains excluded tags');
                     }
 
+                    const characterArray = post.tag_string_character.split(' ')
+                    let characterString;
+                    if (characterArray.length > 2) characterString = characterArray.join(', ').replace(/,([^,]*)$/g, ', and$1');
+                    else characterString = characterArray.join(' and ');
+                    characterString = characterString.replace(/_/g, ' ');
+
+                    const copyrightArray = post.tag_string_copyright.split(' ')
+                    let copyrightString;
+                    if (copyrightArray.length > 2) copyrightString = copyrightArray.join(', ').replace(/,([^,]*)$/g, ', and$1');
+                    else copyrightString = copyrightArray.join(' and ');
+                    copyrightString = copyrightString.replace(/_/g, ' ');
+
                     const body = JSON.stringify({
                         embeds: [{
-                            title: `${post.tag_string_character.replace(/ /g, ' and ').replace(/_/g, ' ')} by ${post.tag_string_artist.replace('_', '\\_')}`,
+                            title: `${characterString} (${copyrightString}) by ${post.tag_string_artist.replace(/_/g, '\\_')}`,
                             url: `${BOORU_URL}/posts/${post.id}`,
                             image: { url: post.file_url },
                             timestamp: post.created_at,
