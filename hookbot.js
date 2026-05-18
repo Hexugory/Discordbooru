@@ -137,7 +137,7 @@ pollAPI(`/posts.json${BASE_TAGS ? `?tags=${BASE_TAGS}&` : '?'}limit=1`).then((po
 
                     const body = JSON.stringify({
                         embeds: [{
-                            title: `${characterString} (${copyrightString}) by ${post.tag_string_artist.replace(/_/g, '\\_')}`,
+                            title: `${characterString} (${copyrightString}) by ${post.tag_string_artist.replace(/_/g, '\\_')}`.slice(0, 256),
                             url: `${BOORU_URL}/posts/${post.id}`,
                             image: { url: post.file_url },
                             timestamp: post.created_at,
