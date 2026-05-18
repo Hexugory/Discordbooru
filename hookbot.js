@@ -113,26 +113,26 @@ pollAPI(`/posts.json${BASE_TAGS ? `?tags=${BASE_TAGS}&` : '?'}limit=1`).then((po
         if (previousID) posts.splice(posts.findIndex(post => { return post.id === previousID }), 1);
         previousID = recentID;
 
-        for (const post of posts) {
+        for (const post of posts.reverse()) {
             for (const hook of webhooks) {
                 if (hook.tags.every(tag => { return post.tag_string.includes(tag) }) && RATINGS[post.rating] <= RATINGS[hook.maxRating] && RATINGS[post.rating] >= RATINGS[hook.minRating]) {
                     console.log(`${post.id} matches ${hook.tags} ${hook.minRating}-${hook.maxRating}`);
 
                     if (hook.exclusionTags.some(tag => post.tag_string.includes(tag))) {
-                        return console.log('Post contains excluded tags');
+                        console.log('Post contains excluded tags');
                     }
 
                     const body = JSON.stringify({
                         embeds: [{
-                            title: `${post.tag_string_character} by ${post.tag_string_artist}`,
+                            title: `${post.tag_string_character.replace(/ /g, ' and ').replace(/_/g, ' ')} by ${post.tag_string_artist.replace('_', '\\_')}`,
                             url: `${BOORU_URL}/posts/${post.id}`,
                             image: { url: post.file_url },
                             timestamp: post.created_at,
                             color: parseInt(hook.color, 16),
-                            description: `[Large](${post.large_file_url})`
+                            description: `[Source](${post.source})`
                         }]
                     });
-                    return postMessage(hook.uri, body);
+                    await postMessage(hook.uri, body);
                 }
             };
         };
